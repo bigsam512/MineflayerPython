@@ -7,4 +7,4 @@ You can join the [0x26e discord](https://discord.gg/FMqnBQ5j6C) for help, or joi
 
 # 刷铁轨机
 
-我把youtube上的一个[刷铁轨机教程](https://www.youtube.com/watch?v=7MmJoxSAUsw)做成了程序
+我把youtube上的一个[刷铁轨机教程](https://www.youtube.com/watch?v=7MmJoxSAUsw)做成了[程序](https://github.com/bigsam512/MineflayerPython/blob/main/scripts/digbot.py)
