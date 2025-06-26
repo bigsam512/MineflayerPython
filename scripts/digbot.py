@@ -13,11 +13,11 @@ Vec3 = require('vec3')
 start_pos = None
 
 bot = mineflayer.createBot({
-    "username": "ajeep",
+    "username": "bigsam",
     "host": "192.168.1.82",
     "port": 25565,
     "auth": 'offline',
-    "version": "1.21.4",
+    "version": "1.20.4",
     "hideErrors": False
 })
 
