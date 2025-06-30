@@ -18,7 +18,7 @@ bot = mineflayer.createBot({
     "host": "localhost",
     "port": 25565,
     "auth": 'offline',
-    "version": "1.21.4",
+    "version": "1.20.4",
     "hideErrors": False
 })
 
@@ -48,6 +48,35 @@ async def perform_dig(blocks=[]):
             except Exception as e:
                 print(f"挖掘方块 {block_pos} 时出错: {e}")
     print("Bot 已完成挖坑。")
+
+async def pour_water_in_hole(relative_x, relative_y, relative_z):
+    """Pours water at a location relative to the bot without moving."""
+    print("开始向坑里倒水...")
+
+    bot_pos = bot.entity.position
+    look_at_point = bot_pos.offset(relative_x, relative_y, relative_z)
+
+    try:
+        # 1. Equip the water bucket.
+        await equip_item(bot, 'water_bucket', 'hand')
+        print("已装备水桶。")
+        await asyncio.sleep(0.5)
+
+        # 2. Look at the target point to pour water.
+        print(f"看着目标点 {fmt_vec3(look_at_point)} 倒水...")
+        bot.lookAt(look_at_point)
+        await asyncio.sleep(0.2) # Give bot time to look
+
+        # 3. Activate the item (water bucket) to pour water.
+        activate_result = bot.activateItem()
+        if asyncio.iscoroutine(activate_result):
+            await activate_result
+
+        print("✅ 已成功将水倒入坑中。")
+        await asyncio.sleep(1.0)
+
+    except Exception as e:
+        print(f"❌ 倒水时出错: {e}")
 
 @On(bot, "login")
 def login(this):
@@ -145,16 +174,11 @@ def login(this):
         await plug_component(bot, start_pos, "oak_planks", 1, 3, 4, Vec3(1, 0, 0))
         await plug_component(bot, start_pos, "oak_planks", 2, 3, 4, Vec3(1, 0, 0))
         await walk1(bot, 0, 1, -1)
-        components_to_place = [
-            ("water_bucket", -2, 3, 3),
-            ("water_bucket", -1, 3, 3),
-            ("water_bucket", 0, 3, 3),
-            ("water_bucket", 1, 3, 3),
-            ("water_bucket", 2, 3, 3),
-        ]
-        await place_components(bot, start_pos, components_to_place)
-        await walk1(bot, 1, 0, 0)
-
+        await pour_water_in_hole(-2, -1, -1)
+        await pour_water_in_hole(-1, -1, -1)
+        await pour_water_in_hole(0, -1, -1)
+        await pour_water_in_hole(1, -1, -1)
+        await pour_water_in_hole(2, -1, -1)
         loop.call_soon(loop.stop)
 
     loop.create_task(main_task())
