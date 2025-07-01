@@ -1,3 +1,4 @@
+# https://www.youtube.com/watch?v=LmCFFeUH7oM
 from javascript import require, On
 import asyncio
 from common_bot_utils import (
@@ -60,12 +61,12 @@ async def pour_water_in_hole(relative_x, relative_y, relative_z):
         # 1. Equip the water bucket.
         await equip_item(bot, 'water_bucket', 'hand')
         print("已装备水桶。")
-        await asyncio.sleep(0.5)
+        #await asyncio.sleep(0.5)
 
         # 2. Look at the target point to pour water.
         print(f"看着目标点 {fmt_vec3(look_at_point)} 倒水...")
         bot.lookAt(look_at_point)
-        await asyncio.sleep(0.2) # Give bot time to look
+        #await asyncio.sleep(0.2) # Give bot time to look
 
         # 3. Activate the item (water bucket) to pour water.
         activate_result = bot.activateItem()
@@ -73,7 +74,7 @@ async def pour_water_in_hole(relative_x, relative_y, relative_z):
             await activate_result
 
         print("✅ 已成功将水倒入坑中。")
-        await asyncio.sleep(1.0)
+        #await asyncio.sleep(1.0)
 
     except Exception as e:
         print(f"❌ 倒水时出错: {e}")
@@ -91,14 +92,20 @@ def login(this):
         global start_pos
         await perform_jumps(bot)
         await walk1(bot, 0, 0, 10)
-        await give_item_to_self('chest', 10)
-        await give_item_to_self('hopper', 10)
-        await give_item_to_self('rail', 10)
-        await give_item_to_self('powered_rail', 10)
+        await give_item_to_self('chest', 2)
+        await give_item_to_self('hopper', 6)
+        await give_item_to_self('rail', 3)
+        await give_item_to_self('powered_rail', 2)
         await give_item_to_self('oak_planks', 45)
-        await give_item_to_self('redstone_block', 5)
-        await give_item_to_self('grass_block', 20)
+        await give_item_to_self('redstone_block', 2)
+        await give_item_to_self('grass_block', 17)
         await give_item_to_self('water_bucket', 5)
+        await give_item_to_self('piston', 5)
+        await give_item_to_self('observer', 5)
+        await give_item_to_self('redstone', 5)
+        await give_item_to_self('sugar_cane', 5)
+        await give_item_to_self('glass', 21)
+        await give_item_to_self('hopper_minecart', 1)
         start_pos = get_start_pos(bot)
         components_to_place = [
             ("chest", 0, 1, 0)
@@ -179,6 +186,97 @@ def login(this):
         await pour_water_in_hole(0, -1, -1)
         await pour_water_in_hole(1, -1, -1)
         await pour_water_in_hole(2, -1, -1)
+        components_to_place = [
+            ("oak_planks", 3, 4, 3),
+            ("oak_planks", -3, 4, 3)
+        ]
+        await place_components(bot, start_pos, components_to_place)
+        await plug_component(bot, start_pos, "oak_planks", 3, 4, 3, Vec3(-1, 0, 0))
+        await plug_component(bot, start_pos, "oak_planks", 2, 4, 3, Vec3(-1, 0, 0))
+        await plug_component(bot, start_pos, "oak_planks", 1, 4, 3, Vec3(-1, 0, 0))
+        await plug_component(bot, start_pos, "oak_planks", 0, 4, 3, Vec3(-1, 0, 0))
+        await plug_component(bot, start_pos, "oak_planks", -1, 4, 3, Vec3(-1, 0, 0))
+        await walk1(bot, -2, 0, 0)
+        await place_components(bot, start_pos, [("piston", -2, 5, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("piston", -1, 5, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("piston", 0, 5, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("piston", 1, 5, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("piston", 2, 5, 3)])
+        await walk1(bot, 1, 1, 1)
+        components_to_place = [
+            ("grass_block", -2, 4, 4),
+            ("grass_block", -1, 4, 4),
+            ("grass_block", 0, 4, 4),
+            ("grass_block", 1, 4, 4),
+            ("grass_block", 2, 4, 4),
+            ("grass_block", 3, 4, 4),
+        ]
+        await place_components(bot, start_pos, components_to_place)
+        await walk1(bot, -5, 0, 1)
+        await place_components(bot, start_pos, [("observer", -2, 6, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("observer", -1, 6, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("observer", 0, 6, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("observer", 1, 6, 3)])
+        await walk1(bot, 1, 0, 0)
+        await place_components(bot, start_pos, [("observer", 2, 6, 3)])
+        await walk1(bot, 1, 0, 0)
+        components_to_place = [
+            ("grass_block", -2, 5, 4),
+            ("grass_block", -1, 5, 4),
+            ("grass_block", 0, 5, 4),
+            ("grass_block", 1, 5, 4),
+            ("grass_block", 2, 5, 4),
+            ("redstone", -2, 6, 4),
+            ("redstone", -1, 6, 4),
+            ("redstone", 0, 6, 4),
+            ("redstone", 1, 6, 4),
+            ("redstone", 2, 6, 4),
+        ]
+        await place_components(bot, start_pos, components_to_place)
+        await walk1(bot, -3, -1, -3)
+        components_to_place = [
+            ("sugar_cane", -2, 4, 2),
+            ("sugar_cane", -1, 4, 2),
+            ("sugar_cane", 0, 4, 2),
+            ("sugar_cane", 1, 4, 2),
+            ("sugar_cane", 2, 4, 2),
+            ("glass", -3, 4, 2),
+            ("glass", -3, 5, 2),
+            ("glass", -3, 6, 2),
+            ("glass", -2, 4, 1),
+            ("glass", -2, 5, 1),
+            ("glass", -2, 6, 1),
+            ("glass", -1, 4, 1),
+            ("glass", -1, 5, 1),
+            ("glass", -1, 6, 1),
+        ]
+        await place_components(bot, start_pos, components_to_place)
+        await walk1(bot, 3, 1, 2)
+        components_to_place = [
+            ("glass", 0, 4, 1),
+            ("glass", 0, 5, 1),
+            ("glass", 0, 6, 1),
+            ("glass", 1, 4, 1),
+            ("glass", 1, 5, 1),
+            ("glass", 1, 6, 1),
+            ("glass", 2, 4, 1),
+            ("glass", 2, 5, 1),
+            ("glass", 2, 6, 1),
+            ("glass", 3, 4, 2),
+            ("glass", 3, 5, 2),
+            ("glass", 3, 6, 2),
+        ]
+        await place_components(bot, start_pos, components_to_place)
+        await walk1(bot, 1, -4, 0)
+        await walk1(bot, 0, 0, -3)
+        await place_entity_on_block(bot, start_pos, "hopper_minecart", 2, 2, 2, block_type="powered_rail")
         loop.call_soon(loop.stop)
 
     loop.create_task(main_task())
